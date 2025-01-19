@@ -10,6 +10,7 @@
 <body>
     <div class="container">
         <input type="range" min="1" max="100" value="10" id="circulos">
+        <input type="range" min="1" max="7" value="2" id="radios">
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"
         integrity="sha512-0zGLOFv/+OQ6YfVCSGDQWhrDRx0ONmBqWvs3gI4olm8i6xtKoG1FhEnB4eTaWCVnojyfUDgE8Izeln+mAJAkFA=="
@@ -17,6 +18,7 @@
         </script>
     <script>
         const circulosEl = document.getElementById('circulos');
+        const radiosEl= document.getElementById('radios');
         let time = 0; // Tiempo para la animación
         let wave = []; // Array para guardar la onda
 
@@ -40,7 +42,7 @@
                 let prevY = y;
 
                 // Fórmulas de las series de Fourier
-                let n = i * 2 + 1; // Términos impares
+                let n = i * 2 + parseInt(radiosEl.value); // Términos impares
                 let radius = 50 * (4 / (n * PI)); // Radio proporcional a los coeficientes de Fourier
 
                 x += radius * cos(n * time);
