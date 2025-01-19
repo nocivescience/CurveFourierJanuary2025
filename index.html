@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <input type="range" min="1" max="100" value="10" id="circulos">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"
+        integrity="sha512-0zGLOFv/+OQ6YfVCSGDQWhrDRx0ONmBqWvs3gI4olm8i6xtKoG1FhEnB4eTaWCVnojyfUDgE8Izeln+mAJAkFA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+        </script>
+    <script>
+        const circulosEl = document.getElementById('circulos');
+        let time = 0; // Tiempo para la animación
+        let wave = []; // Array para guardar la onda
+
+        function setup() {
+            createCanvas(800, 400);
+        }
+
+        function draw() {
+            background(30);
+
+            translate(150, 200); // Centrar el dibujo
+            let x = 0;
+            let y = 0;
+
+            // Parámetros de la serie de Fourier
+            let numCircles = circulosEl.value; // Número de términos en la serie
+
+            // Dibujar círculos y calcular la posición del punto final
+            for (let i = 0; i < numCircles; i++) {
+                let prevX = x;
+                let prevY = y;
+
+                // Fórmulas de las series de Fourier
+                let n = i * 2 + 1; // Términos impares
+                let radius = 50 * (4 / (n * PI)); // Radio proporcional a los coeficientes de Fourier
+
+                x += radius * cos(n * time);
+                y += radius * sin(n * time);
+
+                // Dibujar círculo
+                stroke(255, 100);
+                noFill();
+                ellipse(prevX, prevY, radius * 2);
+
+                // Dibujar línea hacia el siguiente punto
+                stroke(255);
+                line(prevX, prevY, x, y);
+            }
+
+            // Guardar la onda
+            wave.unshift(y);
+
+            // Dibujar el punto de la onda
+            translate(200, 0);
+            line(x - 200, y, 0, wave[0]);
+            ellipse(0, wave[0], 8);
+
+            // Dibujar la onda
+            beginShape();
+            noFill();
+            stroke(255, 204, 0);
+            for (let i = 0; i < wave.length; i++) {
+                vertex(i, wave[i]);
+            }
+            endShape();
+
+            // Limitar la longitud de la onda
+            if (wave.length > 500) {
+                wave.pop();
+            }
+
+            // Incrementar el tiempo
+            time += 0.03;
+        }
+
+    </script>
+</body>
+
+</html>
